@@ -1,6 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv'
 import userRouter from './routes/userRoutes'
+import adminRouter from './routes/adminRoutes'
 import { connectDB } from './config/connectDB'
 dotenv.config()
 const app = express()
@@ -14,6 +15,7 @@ app.use((req, res, next) => {
     next() 
 })
 app.use('/',userRouter)
+app.use('/admin',adminRouter)
 
 app.listen(PORT,()=>{
     console.log(`server running at http://localhost:${PORT}`)
