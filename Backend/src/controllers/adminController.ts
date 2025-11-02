@@ -6,6 +6,9 @@ import { compareHash } from "../utils/hashUtils";
 import { generateAccessToken, generateRefreshToken } from "../utils/jwtUtils";
 
 const adminLogin = async (req :Request ,res :Response)=>{
+    try {
+        
+  
     const {error , value} = loginSchema.validate(req.body)
     if (error) {
         return res.status(HttpStatusCode.BAD_REQUEST).json({
@@ -18,7 +21,7 @@ const adminLogin = async (req :Request ,res :Response)=>{
       const admin = await User.findOne({ email , isAdmin :"true" });
 
     if (!admin) {
-      return res.status(HttpStatusCode.CONFLICT).json({
+      return res.status(HttpStatusCode.NOT_FOUND).json({
         success: false,
         message: "Admin with this email not Found.",
       });
@@ -56,6 +59,14 @@ const adminLogin = async (req :Request ,res :Response)=>{
         accessToken,
         admin: adminData,
       });
+    } catch (error) {
+        console.error("Error during admin login:", error);
+
+        return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+            success: false,
+            message: "Internal server error",
+          });
+      }
 
 }
 
