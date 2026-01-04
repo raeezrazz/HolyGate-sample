@@ -6,4 +6,7 @@ router.post('/signup',userController.signup)
 router.post('/verifyotp',userController.verifyOtp)
 router.post('/login',userController.login)
 
+// ------------- CHURCH ----------------
+router.get('/churches',userController.getChurches)
+
 export default router

@@ -11,6 +11,7 @@ import {
     generateRefreshToken,
     verifyRefreshToken,
   } from "../utils/jwtUtils";
+import Church from "../models/churchModel";
 
 
 // ----------------------- Sign Up -----------------------------------------
@@ -94,6 +95,7 @@ const verifyOtp = async (req: Request, res: Response) => {
     const { error, value } = otpVerifySchema.validate(req.body);
      
     if (error) {
+      console.log("validation errro is running")
       return res.status(HttpStatusCode.BAD_REQUEST).json({
         success: false,
         message: error.details.map((err) => err.message),
@@ -223,11 +225,39 @@ const login = async (req: Request, res: Response) => {
       });
     }
   };
+
+
+  // ------------------------ CHURCH ------------------------
+
+  
+
+  const getChurches = async (req: Request, res: Response) => {
+    try {
+      console.log("Fetching all churches...");
+  
+      const churches = await Church.find();
+  
+      return res.status(HttpStatusCode.OK).json({
+        success: true,
+        message: "Churches fetched successfully",
+        churches,
+      });
+    } catch (error) {
+      console.error("Error fetching churches:", error);
+  
+      return res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: "Internal server error",
+      });
+    }
+  };
+
   
 const userController = {
   signup,
   verifyOtp,
   login,
+  getChurches
 };
 
 export default userController;
